@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <windows.h>
 using namespace std;
 
 void PrintSet(const vector<char> &set)
@@ -156,41 +157,29 @@ vector<char> SymmetricDifference(vector<char> &set1, vector<char> &set2)
     return result;
 }
 
-vector<char> CreateSetA()
+vector<char> CreateSet()
 {
-    vector<char> setA;
+    vector<char> set;
     string line;
-
-    cout << "Enter the elements of set A: ";
     getline(cin, line);
     for (char elem : line)
-        if (elem != ' ')
-            setA.push_back(elem);
-
-    sort(setA.begin(), setA.end());
-    setA.erase(unique(setA.begin(), setA.end()), setA.end());
-    return setA;
-}
-
-vector<char> CreateSetB()
-{
-    vector<char> setB;
-    string line;
-    cout << "Enter the elements of set B: ";
-    getline(cin, line);
-    for (char elem : line)
-        if (elem != ' ')
-            setB.push_back(elem);
-
-    sort(setB.begin(), setB.end());
-    setB.erase(unique(setB.begin(), setB.end()), setB.end());
-    return setB;
+        if (elem != ' ' && isalpha(elem))
+            set.push_back(elem);
+        else
+        {
+            cout << "Set must contains only latin letters\n";
+        }
+    sort(set.begin(), set.end());
+    set.erase(unique(set.begin(), set.end()), set.end());
+    return set;
 }
 int main()
 {
-    vector<char> setA = CreateSetA();
-    vector<char> setB = CreateSetB();
-
+    cout << "Enter the elements of set A: ";
+    vector<char> setA = CreateSet();
+    cout << "Enter the elements of set B: ";
+    vector<char> setB = CreateSet();
+    system("cls");
     char choice;
     do
     {
@@ -201,8 +190,7 @@ int main()
         cout << "5. Difference of sets A and B\n";
         cout << "6. Difference of sets B and A\n";
         cout << "7. Symmetric difference of sets A and B\n";
-        cout << "8. Change set A\n";
-        cout << "9. Change set B\n";
+        cout << "8. Change sets\n";
         cout << "0. Exit\n";
         cout << "Enter a number of operation: ";
 
@@ -245,13 +233,21 @@ int main()
             PrintSet(SymmetricDifference(setB, setA));
             break;
         case '8':
-            setA = CreateSetA();
-            break;
-        case '9':
-            setB = CreateSetB();
+            system("cls");
+            cout << "Enter the elements of set A: ";
+            setA = CreateSet();
+            cout << "Enter the elements of set B: ";
+            setB = CreateSet();
+
             break;
         default:
-            break;
+            if (choice != '0')
+            {
+                system("cls");
+                cout << "Incorrect option\n";
+                Sleep(1200);
+                break;
+            }
         }
         cout << "A set: ";
         PrintSet(setA);
@@ -259,5 +255,6 @@ int main()
         cout << "B set: ";
         PrintSet(setB);
     } while (choice != '0');
+    system("cls");
     return 0;
 }
